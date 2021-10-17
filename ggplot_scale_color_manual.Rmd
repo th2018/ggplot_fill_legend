@@ -1,0 +1,46 @@
+---
+title: "Untitled"
+author: "Tao"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+library(tidyverse)
+library(sf)
+```
+
+Read data
+```{r}
+
+
+fire<-st_read("mtbs/CA_Fire.shp")
+```
+
+Example 1
+```{r}
+ggplot() + 
+  geom_sf(data=fire ,aes(color=Incid_Type) )
+
+
+  
+```
+
+Example 2: aes(color=) is not in the legend anymore
+```{r}
+ggplot() + 
+  geom_sf(data=fire ,aes(color=Incid_Type) , color="yellow" )
+
+
+  
+```
+
+Example 3
+```{r}
+ggplot() + 
+  geom_sf(data=fire ,aes(color=Incid_Type)   )+
+  scale_color_manual( name = "Incid_Type", values = c("yellow","blue","purple"))
+
+```
