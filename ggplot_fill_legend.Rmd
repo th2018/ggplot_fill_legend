@@ -1,0 +1,52 @@
+---
+title: "legend"
+author: "Tao"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(tidyverse)
+library(sf)
+#install.packages("ggnewscale")
+library(ggnewscale)
+```
+
+Read data
+```{r}
+fire<-st_read("mtbs/CA_Fire.shp")
+urban<-st_read("tl_2021_us_uac10/west_city.shp")
+```
+
+Example 1: basic plot with legend
+```{r}
+ggplot() + 
+  geom_sf(data=fire ,aes(color=Incid_Type) )
+```
+
+Example 2: aes(color=) is not in the legend anymore
+```{r}
+ggplot() + 
+  geom_sf(data=fire ,aes(color=Incid_Type) , color="yellow" )
+```
+
+Example 3: the legend is back again
+```{r}
+ggplot() + 
+  geom_sf(data=fire ,aes(color=Incid_Type)   )+
+  scale_color_manual( name = "Incid_Type", values = c("yellow","dodgerblue","purple"))
+```
+
+Example 4: use two aes(fill) in a plot
+```{r}
+
+ggplot() + 
+  geom_sf(data=urban ,aes(fill= UATYP10) )+
+  scale_fill_manual(name="Urban", values = c( "UATYP10"="red","yellow"  ))+
+  new_scale_fill()+ #every geom after this will not be affected the scale_fill_manual before
+  geom_sf(data=fire ,aes(fill=Incid_Type) )+
+  scale_fill_manual(values = c("Incid_Type" = "orange","purple","dodgerblue" ))
+
+```
